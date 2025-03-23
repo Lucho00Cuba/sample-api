@@ -34,4 +34,5 @@ jobs:
           ENVIRONMENT=DEV make dependencies
 
       - name: Run tests
-        run: make tests
+        run: |
+          make tests || exit 1
