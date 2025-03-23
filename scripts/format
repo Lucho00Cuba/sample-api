@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+## makefile:fmt This script is used to format the code
+
+if ! command -v black &> /dev/null
+then
+    echo "black is not installed. Installing..."
+    pip install black
+fi
+
+black src

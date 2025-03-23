@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+## makefile:fmt This script is used to install dependencies
+
+# Install dependencies
+echo "Installing dependencies..."
+pip install -r requirements.txt
+
+if [ "${ENVIRONMENT}" == "DEV" ]; then
+    # Install dev dependencies
+    echo "Installing dev dependencies..."
+    pip install -r requirements-dev.txt
+fi

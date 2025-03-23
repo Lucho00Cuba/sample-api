@@ -1,0 +1,5 @@
+black==25.1.0
+pylint==3.3.6
+pre-commit==4.2.0
+pytest==8.3.5
+httpx==0.28.1

@@ -1,0 +1,57 @@
+### Get V1 HelloWorld
+GET http://localhost:3000/apis/v1/helloworld
+
+### Post V1 HelloWorld (body)
+POST http://localhost:3000/apis/v1/helloworld
+Content-Type: application/json
+
+{
+    "name": "John"
+}
+
+### Auth Register (user)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+### Auth Register (admin)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "test",
+    "roles": ["admin"]
+}
+
+### Login (user)
+# @name getTokenUser
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+### Get V1 Secure
+GET http://localhost:3000/apis/v1/secure
+Authorization: Bearer {{ getTokenUser.response.body.token }}
+
+### GetToken (admin)
+# @name getTokenAdmin
+POST http://localhost:3000/auth/get-token
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "test"
+}
+
+### Get V1Alpha Admin
+GET http://localhost:3000/apis/v1alpha/admin
+Authorization: Bearer {{ getTokenAdmin.response.body.token }}

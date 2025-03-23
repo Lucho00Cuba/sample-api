@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+## makefile:fmt This script is used to build the application
+
+# Build the application
+PROJECT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && cd .. && pwd )
+export PYTHONPATH=$PROJECT_DIR/src:$PYTHONPATH
+FORCE=${FORCE:-false}
+
+IMAGE_NAME=sample-api
+# IMAGE_TAG="v$(python -c "from api import __version__; print(__version__)")"
+IMAGE_TAG="$(git rev-parse --short HEAD)"
+if [[ -z "${IMAGE_TAG}" ]]; then
+    IMAGE_TAG="dev"
+fi
+
+echo "Building image ${IMAGE_NAME}:${IMAGE_TAG}"
+
+# check if the image already exists
+if docker image inspect ${IMAGE_NAME}:${IMAGE_TAG} &> /dev/null && ! $FORCE; then
+    echo "Image ${IMAGE_NAME}:${IMAGE_TAG} already exists. Skipping build."
+    echo "To rebuild the image, run 'FORCE=true make build'"
+else
+    echo "Image ${IMAGE_NAME}:${IMAGE_TAG} does not exist or FORCE=true was set. Building image..."
+    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+fi

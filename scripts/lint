@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+## makefile:fmt This script is used to lint the code
+
+if ! command -v pylint &> /dev/null
+then
+    echo "pylint is not installed. Installing..."
+    pip install pylint
+fi
+
+# pylint --reports=y --output-format=text src
+pylint src

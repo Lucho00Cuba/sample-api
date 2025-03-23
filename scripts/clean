@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+## makefile:fmt This script is used to clean the project
+
+# Directories to search and delete
+SEARCH_FILES=(
+    "__pycache__"
+    ".pytest_cache"
+    "dist"
+)
+
+echo "Starting cleanup..."
+
+FILES=()
+
+# Search for directories and files in all subdirectories
+for dir in "${SEARCH_FILES[@]}"; do
+    FOUND_FILES=$(find . -type d -name "$dir")
+    # Add only the directories found
+    if [[ -n "$FOUND_FILES" ]]; then
+        FILES+=($FOUND_FILES)
+    fi
+done
+
+# If no files are found, inform the user and exit
+if [[ ${#FILES[@]} -eq 0 ]]; then
+    echo "No files found to delete."
+    exit 0
+fi
+
+echo "Files to be deleted:"
+# List the files to be deleted
+for file in "${FILES[@]}"; do
+    echo "$file"
+done
+
+echo ""
+
+# User confirmation
+read -p "Are you sure you want to delete these files? [y/N] " -n 1 -r
+echo ""
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborting cleanup."
+    exit 1
+fi
+
+# Remove the files/directories found
+for file in "${FILES[@]}"; do
+    echo "Removing $file..."
+    rm -rf "$file"
+done
+
+echo "Cleanup completed."
